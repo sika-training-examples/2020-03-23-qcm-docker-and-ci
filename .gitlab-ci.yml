@@ -33,3 +33,24 @@ deploy dev:
   environment:
     name: dev/$CI_COMMIT_REF_SLUG
     url: https://$CI_COMMIT_REF_SLUG.dev.qcm.sikademo.com
+    on_stop: stop dev
+
+stop dev:
+  stage: deploy dev
+  when: manual
+  variables:
+    COMPOSE_PROJECT_NAME: $CI_COMMIT_REF_SLUG
+    DOCKER_HOST: $DEV_DOCKER_HOST
+    DOCKER_CERT_PATH: .ci-tmp/docker
+    DOCKER_TLS_VERIFY: "1"
+    HOST: $CI_COMMIT_REF_SLUG.$DEV_DOMAIN
+  script:
+    - mkdir -p $DOCKER_CERT_PATH
+    - cp $DEV_DOCKER_CA_CERT $DOCKER_CERT_PATH/ca.pem
+    - cp $DEV_DOCKER_CERT $DOCKER_CERT_PATH/cert.pem
+    - cp $DEV_DOCKER_KEY $DOCKER_CERT_PATH/key.pem
+    - docker ps --filter label=com.docker.compose.project=$COMPOSE_PROJECT_NAME --format {{.ID}} | xargs -n 1 docker rm --force --volumes
+    - docker system prune -f --all
+  environment:
+    name: dev/$CI_COMMIT_REF_SLUG
+    action: stop
