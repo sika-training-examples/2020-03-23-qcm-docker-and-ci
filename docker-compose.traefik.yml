@@ -1,0 +1,14 @@
+version: "3.8"
+services:
+  phpinfo-nginx:
+    networks:
+      - default
+      - traefik
+    labels:
+      - traefik.frontend.rule=Host:${HOST?}
+      - traefik.enable=true
+
+networks:
+  traefik:
+    external:
+      name: traefik
