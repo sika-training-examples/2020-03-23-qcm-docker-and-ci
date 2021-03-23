@@ -1,0 +1,11 @@
+version: "3.8"
+services:
+  mysql:
+    image: registry.sikahq.com/qcm-group/qcm-demo/mysql:${IMAGE_TAG:-latest}
+    build: ./src/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_HOST:
+      MYSQL_USER:
+      MYSQL_PASSWORD:
+      MYSQL_DATABASE:
