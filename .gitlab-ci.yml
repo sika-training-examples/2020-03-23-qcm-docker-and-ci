@@ -39,6 +39,7 @@ stop dev:
   stage: deploy dev
   when: manual
   variables:
+    GIT_STRATEGY: none
     COMPOSE_PROJECT_NAME: $CI_COMMIT_REF_SLUG
     DOCKER_HOST: $DEV_DOCKER_HOST
     DOCKER_CERT_PATH: .ci-tmp/docker
