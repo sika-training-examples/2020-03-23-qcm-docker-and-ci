@@ -2,6 +2,7 @@ image: sikalabs/ci
 
 stages:
   - build
+  - deploy dev
 
 variables:
   IMAGE_TAG: $CI_COMMIT_REF_SLUG
@@ -12,3 +13,23 @@ build:
     - docker login $CI_REGISTRY -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD
     - docker-compose build
     - docker-compose push
+
+deploy dev:
+  stage: deploy dev
+  variables:
+    COMPOSE_PROJECT_NAME: $CI_COMMIT_REF_SLUG
+    DOCKER_HOST: $DEV_DOCKER_HOST
+    DOCKER_CERT_PATH: .ci-tmp/docker
+    DOCKER_TLS_VERIFY: "1"
+    HOST: $CI_COMMIT_REF_SLUG.$DEV_DOMAIN
+  script:
+    - mkdir -p $DOCKER_CERT_PATH
+    - cp $DEV_DOCKER_CA_CERT $DOCKER_CERT_PATH/ca.pem
+    - cp $DEV_DOCKER_CERT $DOCKER_CERT_PATH/cert.pem
+    - cp $DEV_DOCKER_KEY $DOCKER_CERT_PATH/key.pem
+    - make use-traefik
+    - docker-compose pull
+    - docker-compose up -d --no-build
+  environment:
+    name: dev/$CI_COMMIT_REF_SLUG
+    url: https://$CI_COMMIT_REF_SLUG.dev.qcm.sikademo.com
