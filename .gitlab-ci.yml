@@ -1,0 +1,14 @@
+image: sikalabs/ci
+
+stages:
+  - build
+
+variables:
+  IMAGE_TAG: $CI_COMMIT_REF_SLUG
+
+build:
+  stage: build
+  script:
+    - docker login $CI_REGISTRY -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD
+    - docker-compose build
+    - docker-compose push
