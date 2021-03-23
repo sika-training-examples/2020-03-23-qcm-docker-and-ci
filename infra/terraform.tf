@@ -28,6 +28,8 @@ resource "digitalocean_droplet" "dev" {
   password: asdfasdf2021
   chpasswd:
     expire: false
+  runcmd:
+    - ufw disable
   EOF
 }
 
