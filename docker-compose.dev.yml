@@ -1,0 +1,10 @@
+version: "3.8"
+services:
+  phpinfo:
+    volumes:
+      - ./src/phpinfo:/app
+  phpinfo-nginx:
+    volumes:
+      - ./src/phpinfo:/app
+    ports:
+      - ${PORT:-8000}:80

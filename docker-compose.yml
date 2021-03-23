@@ -6,5 +6,3 @@ services:
     build:
       context: ./src/phpinfo
       dockerfile: Dockerfile.nginx
-    ports:
-      - 8000:80
