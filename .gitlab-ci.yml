@@ -9,6 +9,8 @@ variables:
 
 build:
   stage: build
+  variables:
+    COMPOSE_FILE: docker-compose.yml:docker-compose.mysql.yml
   script:
     - docker login $CI_REGISTRY -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD
     - docker-compose build
@@ -31,7 +33,7 @@ build:
 deploy dev:
   <<: *deploy_template
   script:
-    - make use-traefik
+    - make use-traefik-dev
     - docker-compose pull
     - docker-compose up -d --no-build
   environment:

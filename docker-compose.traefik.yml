@@ -1,6 +1,6 @@
 version: "3.8"
 services:
-  phpinfo-nginx:
+  hello-nginx:
     networks:
       - default
       - traefik

@@ -1,5 +1,5 @@
 use-dev:
 	cp .env.dev .env
 
-use-traefik:
-	cp .env.traefik .env
+use-traefik-dev:
+	cp .env.traefik-dev .env
