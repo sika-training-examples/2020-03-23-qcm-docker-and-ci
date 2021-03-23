@@ -10,11 +10,26 @@ variables:
 
 build:
   stage: build
+  except:
+    variables:
+      - $BUILD_NO_CACHE
   variables:
     COMPOSE_FILE: docker-compose.yml:docker-compose.mysql.yml
   script:
     - docker login $CI_REGISTRY -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD
-    - docker-compose build
+    - docker-compose build --pull
+    - docker-compose push
+
+build no cache:
+  stage: build
+  variables:
+    COMPOSE_FILE: docker-compose.yml:docker-compose.mysql.yml
+  only:
+    variables:
+      - $BUILD_NO_CACHE
+  script:
+    - docker login $CI_REGISTRY -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD
+    - docker-compose build --pull --no-cache
     - docker-compose push
 
 .deploy: &deploy_template
