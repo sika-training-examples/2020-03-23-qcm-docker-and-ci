@@ -1,1 +1,15 @@
+# Mac
+.DS_Store
+
+# Docker
 .env
+
+# Terraform
+.terraform
+*.tfvars
+!terraform.EXAMPLE.tfvars
+*.tfplan
+*.tfstate
+*.backup
+*.log
+.terraform.tfstate.lock.info
