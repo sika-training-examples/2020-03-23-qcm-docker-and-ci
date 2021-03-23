@@ -8,3 +8,16 @@ services:
       context: ./src/phpinfo
       dockerfile: Dockerfile.nginx
     image: registry.sikahq.com/qcm-group/qcm-demo/phpinfo-nginx:${IMAGE_TAG:-latest}
+  hello:
+    build: ./src/hello
+    image: registry.sikahq.com/qcm-group/qcm-demo/hello:${IMAGE_TAG:-latest}
+    environment:
+      MYSQL_HOST:
+      MYSQL_USER:
+      MYSQL_PASSWORD:
+      MYSQL_DATABASE:
+  hello-nginx:
+    build:
+      context: ./src/hello
+      dockerfile: Dockerfile.nginx
+    image: registry.sikahq.com/qcm-group/qcm-demo/hello-nginx:${IMAGE_TAG:-latest}

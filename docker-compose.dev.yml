@@ -7,4 +7,12 @@ services:
     volumes:
       - ./src/phpinfo:/app
     ports:
-      - ${PORT:-8000}:80
+      - ${PORT_PHPINFO:-8000}:80
+  hello:
+    volumes:
+      - ./src/hello:/app
+  hello-nginx:
+    volumes:
+      - ./src/hello:/app
+    ports:
+      - ${PORT_HELLO:-8001}:80
