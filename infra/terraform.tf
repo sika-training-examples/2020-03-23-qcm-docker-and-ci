@@ -44,7 +44,7 @@ resource "cloudflare_record" "dev" {
 
 resource "cloudflare_record" "dev_wildcard" {
   zone_id = "f2c00168a7ecd694bb1ba017b332c019"
-  name    = "*${cloudflare_record.dev.name}"
+  name    = "*.${cloudflare_record.dev.name}"
   value   = cloudflare_record.dev.hostname
   type    = "CNAME"
   proxied = false
@@ -54,5 +54,6 @@ output "dev" {
   value = {
     ip   = digitalocean_droplet.dev.ipv4_address
     fqdn = cloudflare_record.dev.hostname
+    fqdn_wildcard = cloudflare_record.dev_wildcard.hostname
   }
 }
