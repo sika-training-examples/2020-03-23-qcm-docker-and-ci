@@ -13,3 +13,6 @@
 *.backup
 *.log
 .terraform.tfstate.lock.info
+
+# MiniCA
+*.pem
