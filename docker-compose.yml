@@ -1,0 +1,10 @@
+version: "3.8"
+services:
+  phpinfo:
+    build: ./src/phpinfo
+  phpinfo-nginx:
+    build:
+      context: ./src/phpinfo
+      dockerfile: Dockerfile.nginx
+    ports:
+      - 8000:80
