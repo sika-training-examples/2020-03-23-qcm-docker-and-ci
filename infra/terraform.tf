@@ -50,10 +50,55 @@ resource "cloudflare_record" "dev_wildcard" {
   proxied = false
 }
 
+resource "digitalocean_droplet" "prod" {
+  image  = "docker-18-04"
+  name   = "qcm-prod"
+  region = "fra1"
+  size   = "s-2vcpu-4gb"
+  ssh_keys = [
+    data.digitalocean_ssh_key.ondrejsika.id
+  ]
+  user_data = <<-EOF
+  #cloud-config
+  ssh_pwauth: yes
+  password: asdfasdf2021
+  chpasswd:
+    expire: false
+  runcmd:
+    - ufw disable
+  EOF
+}
+
+resource "cloudflare_record" "prod" {
+  zone_id = "f2c00168a7ecd694bb1ba017b332c019"
+  name    = "prod.qcm"
+  value   = digitalocean_droplet.prod.ipv4_address
+  type    = "A"
+  proxied = false
+}
+
+
+resource "cloudflare_record" "prod_wildcard" {
+  zone_id = "f2c00168a7ecd694bb1ba017b332c019"
+  name    = "*.${cloudflare_record.prod.name}"
+  value   = cloudflare_record.prod.hostname
+  type    = "CNAME"
+  proxied = false
+}
+
+
 output "dev" {
   value = {
-    ip   = digitalocean_droplet.dev.ipv4_address
-    fqdn = cloudflare_record.dev.hostname
+    ip            = digitalocean_droplet.dev.ipv4_address
+    fqdn          = cloudflare_record.dev.hostname
     fqdn_wildcard = cloudflare_record.dev_wildcard.hostname
+  }
+}
+
+output "prod" {
+  value = {
+    ip            = digitalocean_droplet.prod.ipv4_address
+    fqdn          = cloudflare_record.prod.hostname
+    fqdn_wildcard = cloudflare_record.prod_wildcard.hostname
   }
 }
