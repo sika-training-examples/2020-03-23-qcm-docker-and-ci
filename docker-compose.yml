@@ -2,7 +2,9 @@ version: "3.8"
 services:
   phpinfo:
     build: ./src/phpinfo
+    image: registry.sikahq.com/qcm-group/qcm-demo/phpinfo:${IMAGE_TAG:-latest}
   phpinfo-nginx:
     build:
       context: ./src/phpinfo
       dockerfile: Dockerfile.nginx
+    image: registry.sikahq.com/qcm-group/qcm-demo/phpinfo-nginx:${IMAGE_TAG:-latest}
