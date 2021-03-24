@@ -1,1 +1,5 @@
-groups: []
+groups:
+  - name: my
+    rules:
+      - record: my_docker_mem
+        expr: container_memory_usage_bytes{id=~"/docker/.*"}
