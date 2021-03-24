@@ -7,6 +7,8 @@ services:
     labels:
       - traefik.frontend.rule=Host:${HOST?}
       - traefik.enable=true
+      - qcm-client=foo
+      - qcm-support=l3
 
 networks:
   traefik:
