@@ -33,6 +33,38 @@ resource "digitalocean_droplet" "dev" {
   EOF
 }
 
+resource "digitalocean_firewall" "dev" {
+  name = "dev"
+
+  droplet_ids = [digitalocean_droplet.dev.id]
+
+  inbound_rule {
+    protocol         = "tcp"
+    port_range       = "1-65535"
+    source_addresses = [
+      "176.114.249.139",
+    ]
+  }
+  inbound_rule {
+    protocol         = "tcp"
+    port_range       = "1-65535"
+    source_droplet_ids = [
+      digitalocean_droplet.runner.id,
+    ]
+  }
+  outbound_rule {
+    protocol              = "tcp"
+    port_range            = "1-65535"
+    destination_addresses = ["0.0.0.0/0", "::/0"]
+  }
+    outbound_rule {
+    protocol              = "udp"
+    port_range            = "1-65535"
+    destination_addresses = ["0.0.0.0/0", "::/0"]
+  }
+}
+
+
 resource "cloudflare_record" "dev" {
   zone_id = "f2c00168a7ecd694bb1ba017b332c019"
   name    = "dev.qcm"
