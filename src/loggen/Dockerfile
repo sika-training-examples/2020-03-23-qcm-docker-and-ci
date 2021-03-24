@@ -9,5 +9,4 @@ RUN go build -a -ldflags \
 FROM scratch
 COPY --from=build /build/loggen /
 ENTRYPOINT [ "/loggen" ]
-CMD [ "-log-prefix", "loggen-v2" ]
 EXPOSE 80
