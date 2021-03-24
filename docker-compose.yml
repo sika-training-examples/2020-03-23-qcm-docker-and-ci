@@ -1,5 +1,11 @@
 version: "3.8"
 services:
+  loggen:
+    build: ./src/loggen
+    image: registry.sikahq.com/qcm-group/qcm-demo/loggen:${IMAGE_TAG:-latest}
+    labels:
+      - qcm-client=bar
+      - qcm-support=l2
   phpinfo:
     build: ./src/phpinfo
     image: registry.sikahq.com/qcm-group/qcm-demo/phpinfo:${IMAGE_TAG:-latest}
