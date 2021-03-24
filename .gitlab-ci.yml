@@ -54,7 +54,7 @@ deploy dev:
     - docker-compose up -d --no-build
   environment:
     name: dev/$CI_COMMIT_REF_SLUG
-    url: https://$CI_COMMIT_REF_SLUG.dev.qcm.sikademo.com
+    url: https://$CI_COMMIT_REF_SLUG.$DEV_DOMAIN
     on_stop: stop dev
 
 stop dev:
