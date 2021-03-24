@@ -1,0 +1,63 @@
+version: "3.8"
+services:
+  prometheus:
+    image: prom/prometheus
+    volumes:
+      - ./prometheus:/etc/prometheus
+      - prometheus-data:/prometheus
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --storage.tsdb.path=/prometheus
+      - --web.console.libraries=/usr/share/prometheus/console_libraries
+      - --web.console.templates=/usr/share/prometheus/consoles
+      - --web.enable-lifecycle
+    ports:
+      - 9090:9090
+    networks:
+      - default
+      - traefik
+    labels:
+      - traefik.frontend.rule=Host:prom.sikademo.com
+      - traefik.enable=true
+      - traefik.port=9090
+  alertmanager:
+    image: prom/alertmanager
+    volumes:
+      - ./alertmanager:/etc/alertmanager
+      - alertmanager-data:/alertmanager
+    ports:
+      - 9093:9093
+    networks:
+      - default
+      - traefik
+    labels:
+      - traefik.frontend.rule=Host:am.sikademo.com
+      - traefik.enable=true
+      - traefik.port=9093
+  blackbox:
+    build: blackbox
+    networks:
+      - default
+      - traefik
+    labels:
+      - traefik.frontend.rule=Host:bb.sikademo.com
+      - traefik.enable=true
+      - traefik.port=9115
+  maildev:
+    image: maildev/maildev
+    networks:
+      - default
+      - traefik
+    labels:
+      - traefik.frontend.rule=Host:mail.sikademo.com
+      - traefik.enable=true
+      - traefik.port=80
+
+networks:
+  traefik:
+    external:
+      name: traefik
+
+volumes:
+  prometheus-data:
+  alertmanager-data:
